@@ -1,11 +1,19 @@
 #pragma once
 
 #include <vector>
-class Shape
+
+struct coord {//2d for now
+	float x;
+	float y;
+};
+
+class shape
 {
-	std::vector<float> coord_list;
+private:
+	std::vector<coord> vertices;
 public:
-	Shape();
-	~Shape();
+	shape(int);
+	~shape();
+	void print_info();
 };
 

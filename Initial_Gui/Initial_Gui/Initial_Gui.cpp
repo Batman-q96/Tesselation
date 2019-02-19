@@ -4,6 +4,8 @@
 #include "stdafx.h"
 #include "Initial_Gui.h"
 
+#include "Shape.h"
+
 #define MAX_LOADSTRING 100
 
 // Global Variables:
@@ -26,6 +28,27 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(lpCmdLine);
 
     // TODO: Place code here.
+
+	shape *trgl = new shape(3);
+	shape *squr = new shape(4);
+	shape *pent = new shape(5);
+	shape *hexa = new shape(6);
+	shape *sept = new shape(7);
+	shape *octa = new shape(8);
+
+	trgl->print_info();
+	squr->print_info();
+	pent->print_info();
+	hexa->print_info();
+	sept->print_info();
+	octa->print_info();
+
+	delete trgl;
+	delete squr;
+	delete pent;
+	delete hexa;
+	delete sept;
+	delete octa;
 
     // Initialize global strings
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
