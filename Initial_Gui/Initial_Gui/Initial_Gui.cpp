@@ -3,8 +3,17 @@
 
 #include "stdafx.h"
 #include "Initial_Gui.h"
+#include <windows.h>
+#include <objidl.h>
+#include <gdiplus.h>
 
 #include "Shape.h"
+
+
+#include "Debug_prints.cpp"
+
+#define _USE_MATH_DEFINES 
+#include <math.h>
 
 #define MAX_LOADSTRING 100
 
@@ -22,33 +31,49 @@ INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
                      _In_ LPWSTR    lpCmdLine,
-                     _In_ int       nCmdShow)
-{
+                     _In_ int       nCmdShow){
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
     // TODO: Place code here.
+	HWND                            hWnd;
+	MSG                             msg;
+	WNDCLASS                        wndClass;
+	Gdiplus::GdiplusStartupInput    gdiplusStartupInput;
+	ULONG_PTR                       gdiplusToken;
 
-	shape *trgl = new shape(3);
-	shape *squr = new shape(4);
-	shape *pent = new shape(5);
-	shape *hexa = new shape(6);
-	shape *sept = new shape(7);
-	shape *octa = new shape(8);
+	// Initialize GDI+.
+	Gdiplus::GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
 
-	trgl->print_info();
-	squr->print_info();
-	pent->print_info();
-	hexa->print_info();
-	sept->print_info();
-	octa->print_info();
+	wndClass.style = CS_HREDRAW | CS_VREDRAW;
+	wndClass.lpfnWndProc = WndProc;
+	wndClass.cbClsExtra = 0;
+	wndClass.cbWndExtra = 0;
+	wndClass.hInstance = hInstance;
+	wndClass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
+	wndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
+	wndClass.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
+	wndClass.lpszMenuName = NULL;
+	wndClass.lpszClassName = TEXT("GettingStarted");
 
-	delete trgl;
-	delete squr;
-	delete pent;
-	delete hexa;
-	delete sept;
-	delete octa;
+	RegisterClass(&wndClass);
+
+	hWnd = CreateWindow(
+		TEXT("GettingStarted"),   // window class name
+		TEXT("Getting Started"),  // window caption
+		WS_OVERLAPPEDWINDOW,      // window style
+		CW_USEDEFAULT,            // initial x position
+		CW_USEDEFAULT,            // initial y position
+		CW_USEDEFAULT,            // initial x size
+		CW_USEDEFAULT,            // initial y size
+		NULL,                     // parent window handle
+		NULL,                     // window menu handle
+		hInstance,                // program instance handle
+		NULL);                    // creation parameters
+
+	//ShowWindow(hWnd, nCmdShow);
+	//UpdateWindow(hWnd);
+	//copied from https://docs.microsoft.com/en-us/windows/desktop/gdiplus/-gdiplus-drawing-a-line-use
 
     // Initialize global strings
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
@@ -63,7 +88,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_INITIALGUI));
 
-    MSG msg;
+    //MSG msg;
 
     // Main message loop:
     while (GetMessage(&msg, nullptr, 0, 0))
@@ -170,6 +195,43 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hWnd, &ps);
             // TODO: Add any drawing code that uses hdc here...
+
+			shape *trgl = new shape(3);
+
+			trgl->print_info();
+
+			coord displacement = { 500,500 };
+			trgl->move(displacement);
+			trgl->print_info();
+
+			trgl->zoom(100);
+			trgl->print_info();
+
+			trgl->draw(hdc);
+			debug_print(L"\n\nrotate 1\n\n");
+			trgl->rotate(M_PI);
+			trgl->print_info();
+
+			trgl->draw(hdc, Gdiplus::Color(255, 0, 255, 0));
+
+			debug_print(L"\n\nrotate 2\n\n");
+			trgl->rotate(0.5*M_PI);
+			trgl->print_info();
+
+			trgl->draw(hdc, Gdiplus::Color(255, 0, 255, 255));
+
+			debug_print(L"\n\nrotate 3\n\n");
+			trgl->rotate(0.5*M_PI);
+			trgl->print_info();
+			trgl->draw(hdc, Gdiplus::Color(255, 255, 255, 0));
+
+			debug_print(L"\n\nrotate 4\n\n");
+			trgl->rotate(0.5*M_PI);
+			trgl->print_info();
+			
+			trgl->draw(hdc, Gdiplus::Color(255, 255, 0, 0));
+			//delete trgl;
+
             EndPaint(hWnd, &ps);
         }
         break;

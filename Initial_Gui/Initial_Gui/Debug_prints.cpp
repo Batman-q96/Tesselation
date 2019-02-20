@@ -1,6 +1,9 @@
 #include "Debug_prints.h"
 #include <stdio.h>
 #ifdef debug_build
+void debug_sleep(int duration) {
+	Sleep(duration);
+}
 void debug_print(LPCTSTR lpszFormat, ...) {
 	va_list args, temp;
 	va_start(args, lpszFormat);
@@ -22,4 +25,5 @@ void debug_print(LPCTSTR lpszFormat, ...) {
 }
 #else
 void debug_print(LPCTSTR lpszFormat, ...);
+void debug_sleep(int duration);
 #endif
