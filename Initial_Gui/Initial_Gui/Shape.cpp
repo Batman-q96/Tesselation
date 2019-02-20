@@ -57,17 +57,15 @@ void shape::rotate_origin(const double angle) {
 	double rota_matrix[2][2] = { {cos(angle), -sin(angle)}, {sin(angle), cos(angle)} };//2d for now
 
 	debug_print(L"Rotating a %d-angle by %f radians\n", vertices.size(), angle);
-	print_info();
 	for (ii = vertices.begin(); ii != vertices.end(); ii++) {//point locations
-		(*ii).x = (float) ((*ii).x*rota_matrix[0][0] + (*ii).y*rota_matrix[0][1]);
-		(*ii).y = (float) ((*ii).x*rota_matrix[1][0] + (*ii).y*rota_matrix[1][1]);
+		float new_x = (float) ((*ii).x*rota_matrix[0][0] + (*ii).y*rota_matrix[0][1]);
+		float new_y = (float) ((*ii).x*rota_matrix[1][0] + (*ii).y*rota_matrix[1][1]);
+		(*ii).x = new_x;
+		(*ii).y = new_y;
 	}
-	print_info();
 
 }
 void shape::rotate(const double angle, const int point) {
-	debug_print(L"Rotating a %d-angle around point %d by %f radians\n", vertices.size(), point, angle);
-
 	coord anti_point = { 0 - vertices[point].x, 0 - vertices[point].y };
 	coord orig_point = { vertices[point].x, vertices[point].y };
 	move(anti_point);

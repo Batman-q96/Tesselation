@@ -212,9 +212,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			trgl->rotate(M_PI);
 			trgl->print_info();
 
-			trgl->draw(hdc, Gdiplus::Color(255, 0, 255, 0));
+			trgl->draw(hdc, Gdiplus::Color(255, 0, 0, 0));
 
 			debug_print(L"\n\nrotate 2\n\n");
+			trgl->print_info();
 			trgl->rotate(0.5*M_PI);
 			trgl->print_info();
 
@@ -223,13 +224,13 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			debug_print(L"\n\nrotate 3\n\n");
 			trgl->rotate(0.5*M_PI);
 			trgl->print_info();
-			trgl->draw(hdc, Gdiplus::Color(255, 255, 255, 0));
+			trgl->draw(hdc, Gdiplus::Color(255, 255, 0, 0));
 
 			debug_print(L"\n\nrotate 4\n\n");
 			trgl->rotate(0.5*M_PI);
 			trgl->print_info();
 			
-			trgl->draw(hdc, Gdiplus::Color(255, 255, 0, 0));
+			trgl->draw(hdc, Gdiplus::Color(255, 0, 255, 0));
 			//delete trgl;
 
             EndPaint(hWnd, &ps);
