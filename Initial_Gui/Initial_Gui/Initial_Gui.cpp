@@ -27,6 +27,7 @@ ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 INT_PTR CALLBACK    About(HWND, UINT, WPARAM, LPARAM);
+int                 redraw(Gdiplus::Graphics *);
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -71,8 +72,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 		hInstance,                // program instance handle
 		NULL);                    // creation parameters
 
-	//ShowWindow(hWnd, nCmdShow);
-	//UpdateWindow(hWnd);
 	//copied from https://docs.microsoft.com/en-us/windows/desktop/gdiplus/-gdiplus-drawing-a-line-use
 
     // Initialize global strings
@@ -148,6 +147,19 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
       CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
 
+   HWND hwndButton = CreateWindow(
+	   TEXT("BUTTON"),                                         // Predefined class; Unicode assumed 
+	   TEXT("OK"),                                             // Button text 
+	   WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_DEFPUSHBUTTON,  // Styles 
+	   CW_USEDEFAULT,                                          // x position 
+	   CW_USEDEFAULT,                                          // y position 
+	   100,                                                    // Button width
+	   100,                                                    // Button height
+	   hWnd,                                                   // Parent window
+	   (HMENU) 1,                                              // 3
+	   hInstance,                                              // program instance handle
+	   NULL);                                                  // Pointer not needed.
+
    if (!hWnd)
    {
       return FALSE;
@@ -182,6 +194,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             case IDM_ABOUT:
                 DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
                 break;
+			case 1:
+
             case IDM_EXIT:
                 DestroyWindow(hWnd);
                 break;
@@ -192,46 +206,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_PAINT:
         {
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hWnd, &ps);
+			std::vector<shape*>::iterator   ii;
+            PAINTSTRUCT                     ps;
+            HDC                             hdc = BeginPaint(hWnd, &ps);
+			Gdiplus::Graphics               graphics(hdc);
             // TODO: Add any drawing code that uses hdc here...
 
-			shape *trgl = new shape(3);
-
-			trgl->print_info();
-
-			coord displacement = { 500,500 };
-			trgl->move(displacement);
-			trgl->print_info();
-
-			trgl->zoom(100);
-			trgl->print_info();
-
-			trgl->draw(hdc);
-			debug_print(L"\n\nrotate 1\n\n");
-			trgl->rotate(M_PI);
-			trgl->print_info();
-
-			trgl->draw(hdc, Gdiplus::Color(255, 0, 0, 0));
-
-			debug_print(L"\n\nrotate 2\n\n");
-			trgl->print_info();
-			trgl->rotate(0.5*M_PI);
-			trgl->print_info();
-
-			trgl->draw(hdc, Gdiplus::Color(255, 0, 255, 255));
-
-			debug_print(L"\n\nrotate 3\n\n");
-			trgl->rotate(0.5*M_PI);
-			trgl->print_info();
-			trgl->draw(hdc, Gdiplus::Color(255, 255, 0, 0));
-
-			debug_print(L"\n\nrotate 4\n\n");
-			trgl->rotate(0.5*M_PI);
-			trgl->print_info();
-			
-			trgl->draw(hdc, Gdiplus::Color(255, 0, 255, 0));
-			//delete trgl;
+			graphics.Clear(Gdiplus::Color(255, 255, 255, 255));
+			/*for (ii = shape_list.begin(); ii != shape_list.end(); ii++) {//iterate over shapes, skip last one
+				(*ii)->draw(&graphics);
+			}*/
 
             EndPaint(hWnd, &ps);
         }
@@ -263,4 +247,17 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     }
     return (INT_PTR)FALSE;
+}
+
+int redraw(Gdiplus::Graphics *graphics, std::vector<shape> shape_list) {
+	std::vector<shape>::iterator    ii;
+	if (graphics->Clear(Gdiplus::Color(0, 0, 0, 0))) {
+		return -1;
+	}
+	else {
+		for (ii = shape_list.begin(); ii != shape_list.end(); ii++) {//iterate over shapes, skip last one
+			ii->draw(graphics);
+		}
+		return 0;
+	}
 }

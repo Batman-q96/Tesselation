@@ -17,9 +17,10 @@ private:
 	void rotate_origin(const double angle);
 public:
 	shape(int);
+	shape(int, std::vector<shape*>*);
 	~shape();
 	void print_info();
-	void draw(HDC, Gdiplus::Color pen_color= Gdiplus::Color(255, 0, 0, 0));
+	void draw(Gdiplus::Graphics*, Gdiplus::Color pen_color= Gdiplus::Color(255, 0, 0, 0));
 	void move(const coord);
 	void rotate(const double, const int point = 0);
 	void zoom(const int);
