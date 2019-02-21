@@ -7,10 +7,10 @@
 #include <objidl.h>
 #include <gdiplus.h>
 
-#include "Shape.h"
+#include "Circle.h"
 
 
-#include "Debug_prints.cpp"
+#include "Debug_prints.h"
 
 #define _USE_MATH_DEFINES 
 #include <math.h>
@@ -183,6 +183,8 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+	std::vector<Shape*> shape_list;
+	Circle circ1 = Circle::Circle(1, { 500,500 });
     switch (message)
     {
     case WM_COMMAND:
@@ -195,7 +197,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
                 break;
 			case 1:
-
+				shape_list.push_back(&circ1);
+				RedrawWindow(hWnd,NULL,NULL,0);
+				break;
             case IDM_EXIT:
                 DestroyWindow(hWnd);
                 break;
@@ -206,16 +210,18 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_PAINT:
         {
-			std::vector<shape*>::iterator   ii;
+			std::vector<Shape*>::iterator   ii;
             PAINTSTRUCT                     ps;
             HDC                             hdc = BeginPaint(hWnd, &ps);
 			Gdiplus::Graphics               graphics(hdc);
             // TODO: Add any drawing code that uses hdc here...
 
 			graphics.Clear(Gdiplus::Color(255, 255, 255, 255));
-			/*for (ii = shape_list.begin(); ii != shape_list.end(); ii++) {//iterate over shapes, skip last one
+
+
+			for (ii = shape_list.begin(); ii != shape_list.end(); ii++) {//iterate over shapes
 				(*ii)->draw(&graphics);
-			}*/
+			}
 
             EndPaint(hWnd, &ps);
         }
@@ -247,17 +253,4 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     }
     return (INT_PTR)FALSE;
-}
-
-int redraw(Gdiplus::Graphics *graphics, std::vector<shape> shape_list) {
-	std::vector<shape>::iterator    ii;
-	if (graphics->Clear(Gdiplus::Color(0, 0, 0, 0))) {
-		return -1;
-	}
-	else {
-		for (ii = shape_list.begin(); ii != shape_list.end(); ii++) {//iterate over shapes, skip last one
-			ii->draw(graphics);
-		}
-		return 0;
-	}
 }

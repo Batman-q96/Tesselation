@@ -5,24 +5,26 @@
 #include <objidl.h>
 #include <gdiplus.h>
 
-struct coord {//2d for now
-	float x;
-	float y;
-};
-
-class shape
+class Shape
 {
-private:
-	std::vector<coord> vertices;
-	void rotate_origin(const double angle);
+protected:
+	Gdiplus::Graphics* graphics;
+	Gdiplus::PointF    center;
+	float              radius;
 public:
-	shape(int);
-	shape(int, std::vector<shape*>*);
-	~shape();
-	void print_info();
-	void draw(Gdiplus::Graphics*, Gdiplus::Color pen_color= Gdiplus::Color(255, 0, 0, 0));
-	void move(const coord);
-	void rotate(const double, const int point = 0);
-	void zoom(const int);
+	Shape(float,
+		Gdiplus::PointF    center = Gdiplus::PointF::PointF(),
+		Gdiplus::Graphics* graphics_def = NULL);
+	~Shape();
+	void set_graphics(Gdiplus::Graphics* graphics_def);
+	virtual void print();
+	virtual void draw(Gdiplus::Graphics* graphics,
+		Gdiplus::Color                   fill_color = Gdiplus::Color(255, 0, 0, 0),
+		Gdiplus::Color                   edge_color = Gdiplus::Color(255, 0, 0, 0),
+		int                              line_width = 1);
+	void draw(Gdiplus::Color edge_color = Gdiplus::Color(255, 0, 0, 0),
+		Gdiplus::Color       fill_color = Gdiplus::Color(255, 0, 0, 0),
+		int                  line_width = 1);
+	virtual void move(Gdiplus::PointF);
+	virtual void zoom(const int);
 };
-
