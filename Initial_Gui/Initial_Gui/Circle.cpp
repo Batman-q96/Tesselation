@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Circle.h"
 
-#define DEBUG_BUILD
 #include "Debug_prints.h"
 
 Circle::Circle(float size,
@@ -22,5 +21,7 @@ void Circle::draw(Gdiplus::Graphics* graphics,
 	debug_print(TEXT("\ntest\n"));
 	float top_right_x = center.X - radius;
 	float top_right_y = center.Y - radius;
-	graphics->DrawEllipse(new Gdiplus::Pen(edge_color), top_right_x, top_right_y, radius * 2, radius * 2);
+	graphics->FillEllipse(new Gdiplus::SolidBrush(fill_color), top_right_x, top_right_y, radius * 2, radius * 2);
+	graphics->DrawEllipse(new Gdiplus::Pen(edge_color, line_width), top_right_x, top_right_y, radius * 2, radius * 2);
+	debug_print(TEXT("Drwaing circle"));
 }

@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Shape.h"
 
-#define DEBUG_BUILD
 #include "Debug_prints.h"
 
 
@@ -12,7 +11,7 @@ Shape::Shape(float size,
 	if (graphics_def) {
 		graphics = graphics_def;
 	}
-	OutputDebugString(TEXT("Shape created\n\n"));
+	debug_print(TEXT("Shape created\n\n"));
 }
 
 Shape::~Shape() {
@@ -33,8 +32,8 @@ void Shape::print() {
 void Shape::draw(Gdiplus::Graphics* graphics,
 	Gdiplus::Color                   fill_color,
 	Gdiplus::Color                   edge_color,
-	int                              line_widt) {
-	//debug_print(TEXT("ERROR:\tCANNOT DRAW RAW SHAPE\n"));
+	int                              line_width) {
+	OutputDebugString(TEXT("ERROR:\tCANNOT DRAW RAW SHAPE\n"));
 
 }
 

@@ -1,7 +1,8 @@
 #include "stdafx.h"
 #include "Debug_prints.h"
 #include <stdio.h>
-#ifdef debug_build
+
+#ifdef _DEBUG
 void debug_sleep(int duration) {
 	Sleep(duration);
 }
