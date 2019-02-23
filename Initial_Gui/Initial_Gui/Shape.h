@@ -21,10 +21,10 @@ public:
 	virtual void draw(Gdiplus::Graphics* graphics,
 		Gdiplus::Color                   fill_color = Gdiplus::Color(255, 0, 0, 0),
 		Gdiplus::Color                   edge_color = Gdiplus::Color(255, 0, 0, 0),
-		int                              line_width = 1);
+		int                              line_width = 1) = 0;
 	void draw(Gdiplus::Color edge_color = Gdiplus::Color(255, 0, 0, 0),
 		Gdiplus::Color       fill_color = Gdiplus::Color(255, 0, 0, 0),
-		int                  line_width = 1);
+		int                  line_width = 0);
 	virtual void move(Gdiplus::PointF);
 	virtual void zoom(const int);
 };

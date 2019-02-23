@@ -7,6 +7,7 @@
 #include <objidl.h>
 #include <gdiplus.h>
 
+#include "Polygon.h"
 #include "Circle.h"
 
 #include "Debug_prints.h"
@@ -36,6 +37,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(lpCmdLine);
 
     // TODO: Place code here.
+
 	HWND                            hWnd;
 	MSG                             msg;
 	WNDCLASS                        wndClass;
@@ -182,6 +184,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+
     switch (message)
     {
     case WM_COMMAND:
@@ -194,8 +197,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
                 break;
 			case 1:
-				//shape_list.push_back(&circ1);
-				RedrawWindow(hWnd,NULL,NULL,0);
 				break;
             case IDM_EXIT:
                 DestroyWindow(hWnd);
@@ -214,13 +215,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             // TODO: Add any drawing code that uses hdc here...
 
 			graphics.Clear(Gdiplus::Color(255, 255, 255, 255));
-
-			std::vector<Shape*> shape_list;
-			Circle circ1 = Circle::Circle(100, { 500,500 });
-			shape_list.push_back(&circ1);
-			for (ii = shape_list.begin(); ii != shape_list.end(); ii++) {//iterate over shapes
+			/*for (ii = shape_list.begin(); ii != shape_list.end(); ii++) {//iterate over shapes
 				(*ii)->draw(&graphics, Gdiplus::Color(255, 255, 0, 0), Gdiplus::Color(255, 0, 0, 0), 10);
-			}
+			}*/
 
             EndPaint(hWnd, &ps);
         }

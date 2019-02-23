@@ -29,14 +29,6 @@ void Shape::print() {
 		center.X, center.Y, radius);
 }
 
-void Shape::draw(Gdiplus::Graphics* graphics,
-	Gdiplus::Color                   fill_color,
-	Gdiplus::Color                   edge_color,
-	int                              line_width) {
-	OutputDebugString(TEXT("ERROR:\tCANNOT DRAW RAW SHAPE\n"));
-
-}
-
 void Shape::draw(Gdiplus::Color fill_color,
 	Gdiplus::Color              edge_color,
 	int							line_Width) {
